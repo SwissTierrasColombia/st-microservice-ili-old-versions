@@ -13,8 +13,8 @@ import com.ai.st.microservice.ili.old.entities.QueryEntity;
 import com.ai.st.microservice.ili.old.entities.QueryTypeEntity;
 import com.ai.st.microservice.ili.old.entities.VersionConceptEntity;
 import com.ai.st.microservice.ili.old.entities.VersionEntity;
-import com.ai.st.microservice.ili.old.services.IConceptService;
-import com.ai.st.microservice.ili.old.services.IVersionService;
+import com.ai.st.microservice.ili.old.models.services.IConceptService;
+import com.ai.st.microservice.ili.old.models.services.IVersionService;
 
 @Component
 public class VersionBusiness {

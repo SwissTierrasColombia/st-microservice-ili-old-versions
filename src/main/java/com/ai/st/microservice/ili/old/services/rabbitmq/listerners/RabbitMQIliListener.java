@@ -1,4 +1,4 @@
-package com.ai.st.microservice.ili.old.rabbitmq.listerners;
+package com.ai.st.microservice.ili.old.services.rabbitmq.listerners;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import com.ai.st.microservice.ili.old.dto.IliProcessQueueDto;
 import com.ai.st.microservice.ili.old.dto.IliValidatorBackgroundDto;
 import com.ai.st.microservice.ili.old.dto.ValidationDto;
 import com.ai.st.microservice.ili.old.services.IlivalidatorService;
-import com.ai.st.microservice.ili.old.services.RabbitMQSenderService;
+import com.ai.st.microservice.ili.old.services.rabbitmq.RabbitMQSenderService;
 
 import com.ai.st.microservice.ili.old.services.tracing.SCMTracing;
 import org.apache.commons.io.FileUtils;

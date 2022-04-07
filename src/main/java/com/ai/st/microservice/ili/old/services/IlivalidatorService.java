@@ -1,5 +1,8 @@
 package com.ai.st.microservice.ili.old.services;
 
+import com.ai.st.microservice.ili.old.services.tracing.SCMTracing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.ehi.basics.settings.Settings;
@@ -8,6 +11,8 @@ import org.interlis2.validator.Validator;
 
 @Service
 public class IlivalidatorService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public Boolean validate(String fileXTF, String iliDirectory, String modelsDirectory, String iliPluginsDirectory,
             String logFileValidation, String logFileValidationXTF, String fileConfigurationToml) {
@@ -33,6 +38,9 @@ public class IlivalidatorService {
 
             result = Validator.runValidation(fileXTF, settings);
         } catch (Exception e) {
+            String messageError = String.format("Error validando el archivo XTF : %s", e.getMessage());
+            SCMTracing.sendError(messageError);
+            log.error(messageError);
             result = false;
         }
 

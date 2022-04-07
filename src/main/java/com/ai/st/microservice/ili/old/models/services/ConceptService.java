@@ -1,4 +1,4 @@
-package com.ai.st.microservice.ili.old.services;
+package com.ai.st.microservice.ili.old.models.services;
 
 import javax.transaction.Transactional;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ai.st.microservice.ili.old.entities.ConceptEntity;
-import com.ai.st.microservice.ili.old.repositories.ConceptRepository;
+import com.ai.st.microservice.ili.old.models.repositories.ConceptRepository;
 
 @Service
 public class ConceptService implements IConceptService {

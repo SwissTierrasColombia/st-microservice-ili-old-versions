@@ -20,7 +20,7 @@ import com.ai.st.microservice.ili.old.business.VersionBusiness;
 import com.ai.st.microservice.ili.old.dto.IliProcessQueueDto;
 import com.ai.st.microservice.ili.old.dto.IliValidatorBackgroundDto;
 import com.ai.st.microservice.ili.old.dto.VersionDataDto;
-import com.ai.st.microservice.ili.old.services.RabbitMQSenderService;
+import com.ai.st.microservice.ili.old.services.rabbitmq.RabbitMQSenderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
