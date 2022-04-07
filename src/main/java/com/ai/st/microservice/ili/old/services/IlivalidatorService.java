@@ -10,7 +10,7 @@ import org.interlis2.validator.Validator;
 public class IlivalidatorService {
 
     public Boolean validate(String fileXTF, String iliDirectory, String modelsDirectory, String iliPluginsDirectory,
-                            String logFileValidation, String logFileValidationXTF, String fileConfigurationToml) {
+            String logFileValidation, String logFileValidationXTF, String fileConfigurationToml) {
 
         boolean result;
 
@@ -38,6 +38,5 @@ public class IlivalidatorService {
 
         return result;
     }
-
 
 }

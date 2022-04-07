@@ -15,7 +15,7 @@ import com.ai.st.microservice.ili.old.business.VersionBusiness;
 import com.ai.st.microservice.ili.old.dto.VersionDataDto;
 import com.ai.st.microservice.ili.old.services.ZipService;
 import com.ai.st.microservice.ili.old.dto.IliProcessQueueDto;
-import com.ai.st.microservice.ili.old.dto.IlivalidatorBackgroundDto;
+import com.ai.st.microservice.ili.old.dto.IliValidatorBackgroundDto;
 import com.ai.st.microservice.ili.old.dto.ValidationDto;
 import com.ai.st.microservice.ili.old.services.IlivalidatorService;
 import com.ai.st.microservice.ili.old.services.RabbitMQSenderService;
@@ -53,7 +53,6 @@ public class RabbitMQIliListerner {
     @Autowired
     private VersionBusiness versionBusiness;
 
-
     @RabbitListener(queues = "${st.rabbitmq.queueIliOld.queue}", concurrency = "${st.rabbitmq.queueIliOld.concurrency}")
     public void iliProcess(IliProcessQueueDto data) {
 
@@ -65,7 +64,7 @@ public class RabbitMQIliListerner {
 
     }
 
-    public void ilivalidator(IlivalidatorBackgroundDto data) {
+    public void ilivalidator(IliValidatorBackgroundDto data) {
 
         log.info("validation started #" + data.getRequestId());
 
@@ -85,7 +84,8 @@ public class RabbitMQIliListerner {
 
                 String nameDirectory = "ili_process_validation_" + RandomStringUtils.random(7, false, true);
                 Path tmpDirectory = Files.createTempDirectory(Paths.get(stTemporalDirectory), nameDirectory);
-                Path tmpDirectoryLog = Files.createTempDirectory(Paths.get(stTemporalDirectory), RandomStringUtils.random(7, false, true));
+                Path tmpDirectoryLog = Files.createTempDirectory(Paths.get(stTemporalDirectory),
+                        RandomStringUtils.random(7, false, true));
 
                 if (fileExtension.equalsIgnoreCase("zip")) {
 
@@ -109,8 +109,7 @@ public class RabbitMQIliListerner {
                         try {
                             final Path pathToml = Files.createTempFile("myTomlFile", ".toml");
 
-                            String dataFile = "[\"PARAMETER\"]\n" +
-                                    "defaultGeometryTypeValidation=\"off\"";
+                            String dataFile = "[\"PARAMETER\"]\n" + "defaultGeometryTypeValidation=\"off\"";
 
                             // Writing data here
                             byte[] buf = dataFile.getBytes();

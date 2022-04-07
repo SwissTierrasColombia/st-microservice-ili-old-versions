@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class VersionConceptService implements IVersionConceptService {
 
-	@Autowired
-	private VersionConceptRepository versionConceptRepository;
+    @Autowired
+    private VersionConceptRepository versionConceptRepository;
 
-	@Override
-	@Transactional
-	public VersionConceptEntity createVersionConcept(VersionConceptEntity versionConcept) {
-		return versionConceptRepository.save(versionConcept);
-	}
+    @Override
+    @Transactional
+    public VersionConceptEntity createVersionConcept(VersionConceptEntity versionConcept) {
+        return versionConceptRepository.save(versionConcept);
+    }
 
 }
