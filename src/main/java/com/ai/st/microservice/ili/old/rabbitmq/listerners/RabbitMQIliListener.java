@@ -20,6 +20,7 @@ import com.ai.st.microservice.ili.old.dto.ValidationDto;
 import com.ai.st.microservice.ili.old.services.IlivalidatorService;
 import com.ai.st.microservice.ili.old.services.RabbitMQSenderService;
 
+import com.ai.st.microservice.ili.old.services.tracing.SCMTracing;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.LineIterator;
@@ -34,7 +35,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitMQIliListerner {
+public class RabbitMQIliListener {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -121,7 +122,9 @@ public class RabbitMQIliListerner {
                             pathTomlFile = pathToml.toFile().getAbsolutePath();
 
                         } catch (IOException e) {
-                            log.error("Error creating toml file: " + e.getMessage());
+                            String messageError = String.format("Error creando archivo toml : %s", e.getMessage());
+                            SCMTracing.sendError(messageError);
+                            log.error(messageError);
                         }
 
                     }
@@ -138,14 +141,21 @@ public class RabbitMQIliListerner {
                         try {
                             FileUtils.deleteDirectory(tmpDirectoryLog.toFile());
                         } catch (Exception e) {
-                            log.error("It has not been possible delete the directory (log): " + e.getMessage());
+                            String messageError = String.format(
+                                    "Error eliminando el directorio de los logs durante la validación : %s",
+                                    e.getMessage());
+                            SCMTracing.sendError(messageError);
+                            log.error(messageError);
                         }
                     }
 
                     try {
                         FileUtils.deleteDirectory(tmpDirectory.toFile());
                     } catch (Exception e) {
-                        log.error("It has not been possible delete the directory: " + e.getMessage());
+                        String messageError = String.format("Error eliminando el directorio de la validación: %s",
+                                e.getMessage());
+                        SCMTracing.sendError(messageError);
+                        log.error(messageError);
                     }
 
                 }
@@ -153,7 +163,11 @@ public class RabbitMQIliListerner {
             }
 
         } catch (Exception e) {
-            log.error("validation failed # " + data.getRequestId() + " : " + e.getMessage());
+            String messageError = String.format(
+                    "Error realizando la validación del archivo xtf con referencia %s y solicitud %d: %s",
+                    data.getReferenceId(), data.getRequestId(), e.getMessage());
+            SCMTracing.sendError(messageError);
+            log.error(messageError);
             validationDto.setErrors(new ArrayList<>(Collections.singletonList(e.getMessage())));
         }
 

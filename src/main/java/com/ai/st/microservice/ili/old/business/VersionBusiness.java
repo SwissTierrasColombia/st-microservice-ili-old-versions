@@ -41,9 +41,9 @@ public class VersionBusiness {
             VersionConceptEntity versionConcept = versionEntity.getVersionsConcepts().stream()
                     .filter(vC -> vC.getConcept().getId().equals(conceptId)).findAny().orElse(null);
 
-            String models = "";
+            StringBuilder models = new StringBuilder();
             for (ModelEntity modelEntity : versionConcept.getModels()) {
-                models += modelEntity.getName() + ";";
+                models.append(modelEntity.getName()).append(";");
             }
 
             for (QueryEntity queryEntity : versionConcept.getQuerys()) {
@@ -56,7 +56,7 @@ public class VersionBusiness {
             }
 
             versionDataDto.setUrl(versionConcept.getUrl());
-            versionDataDto.setModels(models);
+            versionDataDto.setModels(models.toString());
 
         } else {
             throw new BusinessException("No se ha encontrado la versión");
