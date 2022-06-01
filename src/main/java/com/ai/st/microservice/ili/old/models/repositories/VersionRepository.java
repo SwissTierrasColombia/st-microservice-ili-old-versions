@@ -1,4 +1,4 @@
-package com.ai.st.microservice.ili.old.repositories;
+package com.ai.st.microservice.ili.old.models.repositories;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import com.ai.st.microservice.ili.old.entities.VersionEntity;
 
 public interface VersionRepository extends CrudRepository<VersionEntity, Long> {
 
-	VersionEntity findByName(String name);
+    VersionEntity findByName(String name);
 
-	@Override
-	List<VersionEntity> findAll();
+    @Override
+    List<VersionEntity> findAll();
 
 }

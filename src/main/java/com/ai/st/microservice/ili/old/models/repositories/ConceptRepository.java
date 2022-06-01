@@ -1,4 +1,4 @@
-package com.ai.st.microservice.ili.old.repositories;
+package com.ai.st.microservice.ili.old.models.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 

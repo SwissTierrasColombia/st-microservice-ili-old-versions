@@ -5,7 +5,7 @@ import com.ai.st.microservice.ili.old.business.QueueResponse;
 
 import java.io.Serializable;
 
-public class IlivalidatorBackgroundDto implements Serializable {
+public class IliValidatorBackgroundDto implements Serializable {
 
     private static final long serialVersionUID = -5774043946431854011L;
 
@@ -21,7 +21,7 @@ public class IlivalidatorBackgroundDto implements Serializable {
     private Long supplyRequestedId;
     private String observations;
 
-    public IlivalidatorBackgroundDto() {
+    public IliValidatorBackgroundDto() {
         this.versionModel = "3.0";
         this.skipErrors = false;
         this.skipGeometryValidation = false;
@@ -115,5 +115,14 @@ public class IlivalidatorBackgroundDto implements Serializable {
 
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
+    }
+
+    @Override
+    public String toString() {
+        return "IlivalidatorBackgroundDto{" + "pathFile='" + pathFile + '\'' + ", userCode=" + userCode
+                + ", versionModel='" + versionModel + '\'' + ", skipGeometryValidation=" + skipGeometryValidation
+                + ", skipErrors=" + skipErrors + ", conceptId=" + conceptId + ", queueResponse='" + queueResponse + '\''
+                + ", referenceId='" + referenceId + '\'' + ", requestId=" + requestId + ", supplyRequestedId="
+                + supplyRequestedId + ", observations='" + observations + '\'' + '}';
     }
 }
