@@ -1,4 +1,4 @@
-package com.ai.st.microservice.ili.old.rabbitmq.listerners;
+package com.ai.st.microservice.ili.old.services.rabbitmq.listerners;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +15,12 @@ import com.ai.st.microservice.ili.old.business.VersionBusiness;
 import com.ai.st.microservice.ili.old.dto.VersionDataDto;
 import com.ai.st.microservice.ili.old.services.ZipService;
 import com.ai.st.microservice.ili.old.dto.IliProcessQueueDto;
-import com.ai.st.microservice.ili.old.dto.IlivalidatorBackgroundDto;
+import com.ai.st.microservice.ili.old.dto.IliValidatorBackgroundDto;
 import com.ai.st.microservice.ili.old.dto.ValidationDto;
 import com.ai.st.microservice.ili.old.services.IlivalidatorService;
-import com.ai.st.microservice.ili.old.services.RabbitMQSenderService;
+import com.ai.st.microservice.ili.old.services.rabbitmq.RabbitMQSenderService;
 
+import com.ai.st.microservice.ili.old.services.tracing.SCMTracing;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.LineIterator;
@@ -34,7 +35,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitMQIliListerner {
+public class RabbitMQIliListener {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -53,7 +54,6 @@ public class RabbitMQIliListerner {
     @Autowired
     private VersionBusiness versionBusiness;
 
-
     @RabbitListener(queues = "${st.rabbitmq.queueIliOld.queue}", concurrency = "${st.rabbitmq.queueIliOld.concurrency}")
     public void iliProcess(IliProcessQueueDto data) {
 
@@ -65,7 +65,7 @@ public class RabbitMQIliListerner {
 
     }
 
-    public void ilivalidator(IlivalidatorBackgroundDto data) {
+    public void ilivalidator(IliValidatorBackgroundDto data) {
 
         log.info("validation started #" + data.getRequestId());
 
@@ -85,7 +85,8 @@ public class RabbitMQIliListerner {
 
                 String nameDirectory = "ili_process_validation_" + RandomStringUtils.random(7, false, true);
                 Path tmpDirectory = Files.createTempDirectory(Paths.get(stTemporalDirectory), nameDirectory);
-                Path tmpDirectoryLog = Files.createTempDirectory(Paths.get(stTemporalDirectory), RandomStringUtils.random(7, false, true));
+                Path tmpDirectoryLog = Files.createTempDirectory(Paths.get(stTemporalDirectory),
+                        RandomStringUtils.random(7, false, true));
 
                 if (fileExtension.equalsIgnoreCase("zip")) {
 
@@ -109,8 +110,7 @@ public class RabbitMQIliListerner {
                         try {
                             final Path pathToml = Files.createTempFile("myTomlFile", ".toml");
 
-                            String dataFile = "[\"PARAMETER\"]\n" +
-                                    "defaultGeometryTypeValidation=\"off\"";
+                            String dataFile = "[\"PARAMETER\"]\n" + "defaultGeometryTypeValidation=\"off\"";
 
                             // Writing data here
                             byte[] buf = dataFile.getBytes();
@@ -122,7 +122,9 @@ public class RabbitMQIliListerner {
                             pathTomlFile = pathToml.toFile().getAbsolutePath();
 
                         } catch (IOException e) {
-                            log.error("Error creating toml file: " + e.getMessage());
+                            String messageError = String.format("Error creando archivo toml : %s", e.getMessage());
+                            SCMTracing.sendError(messageError);
+                            log.error(messageError);
                         }
 
                     }
@@ -139,14 +141,21 @@ public class RabbitMQIliListerner {
                         try {
                             FileUtils.deleteDirectory(tmpDirectoryLog.toFile());
                         } catch (Exception e) {
-                            log.error("It has not been possible delete the directory (log): " + e.getMessage());
+                            String messageError = String.format(
+                                    "Error eliminando el directorio de los logs durante la validación : %s",
+                                    e.getMessage());
+                            SCMTracing.sendError(messageError);
+                            log.error(messageError);
                         }
                     }
 
                     try {
                         FileUtils.deleteDirectory(tmpDirectory.toFile());
                     } catch (Exception e) {
-                        log.error("It has not been possible delete the directory: " + e.getMessage());
+                        String messageError = String.format("Error eliminando el directorio de la validación: %s",
+                                e.getMessage());
+                        SCMTracing.sendError(messageError);
+                        log.error(messageError);
                     }
 
                 }
@@ -154,7 +163,11 @@ public class RabbitMQIliListerner {
             }
 
         } catch (Exception e) {
-            log.error("validation failed # " + data.getRequestId() + " : " + e.getMessage());
+            String messageError = String.format(
+                    "Error realizando la validación del archivo xtf con referencia %s y solicitud %d: %s",
+                    data.getReferenceId(), data.getRequestId(), e.getMessage());
+            SCMTracing.sendError(messageError);
+            log.error(messageError);
             validationDto.setErrors(new ArrayList<>(Collections.singletonList(e.getMessage())));
         }
 

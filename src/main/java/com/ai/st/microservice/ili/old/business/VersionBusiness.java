@@ -13,8 +13,8 @@ import com.ai.st.microservice.ili.old.entities.QueryEntity;
 import com.ai.st.microservice.ili.old.entities.QueryTypeEntity;
 import com.ai.st.microservice.ili.old.entities.VersionConceptEntity;
 import com.ai.st.microservice.ili.old.entities.VersionEntity;
-import com.ai.st.microservice.ili.old.services.IConceptService;
-import com.ai.st.microservice.ili.old.services.IVersionService;
+import com.ai.st.microservice.ili.old.models.services.IConceptService;
+import com.ai.st.microservice.ili.old.models.services.IVersionService;
 
 @Component
 public class VersionBusiness {
@@ -41,9 +41,9 @@ public class VersionBusiness {
             VersionConceptEntity versionConcept = versionEntity.getVersionsConcepts().stream()
                     .filter(vC -> vC.getConcept().getId().equals(conceptId)).findAny().orElse(null);
 
-            String models = "";
+            StringBuilder models = new StringBuilder();
             for (ModelEntity modelEntity : versionConcept.getModels()) {
-                models += modelEntity.getName() + ";";
+                models.append(modelEntity.getName()).append(";");
             }
 
             for (QueryEntity queryEntity : versionConcept.getQuerys()) {
@@ -56,7 +56,7 @@ public class VersionBusiness {
             }
 
             versionDataDto.setUrl(versionConcept.getUrl());
-            versionDataDto.setModels(models);
+            versionDataDto.setModels(models.toString());
 
         } else {
             throw new BusinessException("No se ha encontrado la versión");

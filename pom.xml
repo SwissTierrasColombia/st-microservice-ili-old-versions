@@ -14,12 +14,12 @@
 
 	<groupId>com.ai.st.microservice.ili.old</groupId>
 	<artifactId>st-microservice-ili-old-versions</artifactId>
-	<version>1.0.0</version>
+	<version>1.2.0</version>
 	<name>st-microservice-ili-old-versions</name>
 	<description>Microservice ili old versions</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.RC2</spring-cloud.version>
 	</properties>
 
@@ -149,6 +149,32 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>com.ai.st.microservice.common</groupId>
+			<artifactId>st-common</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.logging</groupId>
+			<artifactId>logback</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.agent.java</groupId>
+			<artifactId>newrelic-api</artifactId>
+			<version>7.5.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.agent.java</groupId>
+			<artifactId>newrelic-agent</artifactId>
+			<version>7.5.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -168,6 +194,22 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
+				<version>2.18.0</version>
+				<configuration>
+					<lineEnding>LF</lineEnding>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

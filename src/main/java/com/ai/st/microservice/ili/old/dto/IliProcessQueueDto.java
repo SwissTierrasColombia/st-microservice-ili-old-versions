@@ -9,7 +9,7 @@ public class IliProcessQueueDto implements Serializable {
     public static final Long VALIDATOR = (long) 1;
 
     private Long type;
-    private IlivalidatorBackgroundDto ilivalidatorData;
+    private IliValidatorBackgroundDto ilivalidatorData;
 
     public IliProcessQueueDto() {
 
@@ -23,11 +23,11 @@ public class IliProcessQueueDto implements Serializable {
         this.type = type;
     }
 
-    public IlivalidatorBackgroundDto getIlivalidatorData() {
+    public IliValidatorBackgroundDto getIlivalidatorData() {
         return ilivalidatorData;
     }
 
-    public void setIlivalidatorData(IlivalidatorBackgroundDto ilivalidatorData) {
+    public void setIlivalidatorData(IliValidatorBackgroundDto ilivalidatorData) {
         this.ilivalidatorData = ilivalidatorData;
     }
 

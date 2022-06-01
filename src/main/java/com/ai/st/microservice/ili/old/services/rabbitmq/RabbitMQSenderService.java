@@ -1,4 +1,4 @@
-package com.ai.st.microservice.ili.old.services;
+package com.ai.st.microservice.ili.old.services.rabbitmq;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,8 @@ public class RabbitMQSenderService {
     public String routingKeyResultValidationProductsName;
 
     public void sendStatsValidationQueueProducts(ValidationDto data) {
-        rabbitTemplate.convertAndSend(exchangeResultValidationProductsName, routingKeyResultValidationProductsName, data);
+        rabbitTemplate.convertAndSend(exchangeResultValidationProductsName, routingKeyResultValidationProductsName,
+                data);
     }
 
     public void sendDataToIliProcess(IliProcessQueueDto data) {
